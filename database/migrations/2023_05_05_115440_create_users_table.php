@@ -22,6 +22,7 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->boolean('is_dark')->default(0);
             $table->string('avatar')->nullable();
+            $table->string('mobile_number')->nullable()->unique();
             
             $table->timestamps();
         });
