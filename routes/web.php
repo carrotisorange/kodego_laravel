@@ -31,11 +31,11 @@ Route::controller(UserController::class)->group(function () {
 
    Route::post('/users/store', 'store');
 
-   Route::get('/users/{id}', 'show')->whereNumber('id');
+   Route::get('/users/{email}', 'show');
 
    Route::get('/users/{id}/edit', 'edit')->whereNumber('id');
 
-   Route::patch('/users/{id}/update', 'update')->whereNumber('id');
+   Route::put('/users/{id}/update', 'update')->whereNumber('id');
 
    Route::delete('/users/{id}/delete', 'destroy')->whereNumber('id');
 });
