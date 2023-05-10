@@ -9,7 +9,6 @@ use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
-
     public function index()
     {
         // display all users from the users table
@@ -41,6 +40,7 @@ class UserController extends Controller
             'password' => Hash::make($request->password),
             'mobile_number' => $request->mobile_number
         ]);
+
     }
 
     public function show($email)

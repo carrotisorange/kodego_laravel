@@ -5,7 +5,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\CommentController;
-
+use App\Http\Controllers\UserBlogController;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,6 +39,14 @@ Route::controller(UserController::class)->group(function () {
 
    Route::delete('/users/{id}/delete', 'destroy')->whereNumber('id');
 });
+
+//routes for the user blog
+Route::controller(UserBlogController::class)->group(function () {
+    //store method
+    Route::post('/user/{id}/blog/store', 'store');
+});
+
+
 
 //routes for the blog
 Route::controller(BlogController::class)->group(function () {
