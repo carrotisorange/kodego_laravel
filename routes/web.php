@@ -43,7 +43,13 @@ Route::controller(UserController::class)->group(function () {
 //routes for the user blog
 Route::controller(UserBlogController::class)->group(function () {
     //store method
-    Route::post('/user/{id}/blog/store', 'store');
+    Route::post('/user/{id}/blog/store', 'store')->whereNumber('id');
+    //edit method
+    Route::put('/user/{user_id}/blog/{blog_id}/update', 'update')->whereNumber(['blog_id', 'user_id']);
+    //index method
+    Route::get('/user/{user_id}/blogs', 'index')->whereNumber('id');
+    //destroy method
+    Route::delete('/user/{user_id}/blog/{blog_id}/delete', 'destroy')->whereNumber(['blog_id', 'user_id']);
 });
 
 
