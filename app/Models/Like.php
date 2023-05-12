@@ -9,6 +9,10 @@ class Like extends Model
 {
     use HasFactory;
 
+    protected $attributes = [
+        'is_liked' => true
+    ];
+
     public function user(){
         return $this->belongsTo(User::class, 'user_id');
     }

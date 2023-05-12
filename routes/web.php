@@ -6,6 +6,7 @@ use App\Http\Controllers\BlogController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\UserBlogController;
+use App\Http\Controllers\UserBlogLikeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -52,16 +53,24 @@ Route::controller(UserBlogController::class)->group(function () {
     Route::delete('/user/{user_id}/blog/{blog_id}/delete', 'destroy')->whereNumber(['blog_id', 'user_id']);
 });
 
-
-
 //routes for the blog
-Route::controller(BlogController::class)->group(function () {
-    //routes here
+Route::controller(UserBlogLikeController::class)->group(function () {
+    //store method
+    Route::post('/user/{user_id}/blog/{blog_id}/like/store', 'store')->whereNumber(['user_id', 'blog_id']);
+
+    //update method 
+    Route::put('/user/{user_id}/blog/{blog_id}/like/{like_id}/update', 'update')->whereNumber(['blog_id', 'user_id', 'like_id']);
+
+    //index method
+    Route::get('/user/{user_id}/blog/{blog_id}/likes', 'index')->whereNumber(['blog_id', 'user_id']);
 });
 
 //routes for the like
 Route::controller(LikeController::class)->group(function () {
-    //routes here
+    //store method
+
+
+    //
 });
 
 //routes for the comment
