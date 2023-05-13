@@ -8,6 +8,7 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\UserBlogCommentController;
 use App\Http\Controllers\UserBlogController;
 use App\Http\Controllers\UserBlogLikeController;
+use App\Models\Blog;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,9 +21,19 @@ use App\Http\Controllers\UserBlogLikeController;
 |
 */
 
+Auth::routes(['verify' => true]);
+
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('/login');
 });
+
+Route::controller(BlogController::class)->group(function () {
+
+    Route::get('/dashboard', 'index')->middleware(['auth', 'verified'])->name('dashboard');
+
+});
+
+require __DIR__.'/auth.php';
 
 //routes for the user 
 Route::controller(UserController::class)->group(function () {
@@ -43,13 +54,15 @@ Route::controller(UserController::class)->group(function () {
 });
 
 //routes for the user blog
-Route::controller(UserBlogController::class)->group(function () {
+Route::scopeBindings()->controller(UserBlogController::class)->group(function () {
     //store method
     Route::post('/user/{id}/blog/store', 'store')->whereNumber('id');
     //edit method
     Route::put('/user/{user_id}/blog/{blog_id}/update', 'update')->whereNumber(['blog_id', 'user_id']);
     //index method
     Route::get('/user/{user_id}/blogs', 'index')->whereNumber('id');
+    //show method
+    Route::get('/user/{user}/blog/{blog}', 'show');
     //destroy method
     Route::delete('/user/{user_id}/blog/{blog_id}/delete', 'destroy')->whereNumber(['blog_id', 'user_id']);
 });
@@ -80,19 +93,4 @@ Route::scopeBindings()->controller(UserBlogCommentController::class)->group(func
 
     //update a comment
     Route::put('/user/{user}/blog/{blog}/comment/{comment}/update', 'update');
-});
-
-
-
-//routes for the like
-Route::controller(LikeController::class)->group(function () {
-    //store method
-
-
-    //
-});
-
-//routes for the comment
-Route::controller(CommentController::class)->group(function () {
-    //routes here
 });

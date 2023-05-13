@@ -121,4 +121,11 @@ class UserBlogController extends Controller
         }
 
     }
+
+    public function show( User $user, Blog $blog){
+
+        return view('users.blogs.show',[
+            'blog' => $blog
+        ]);
+    }
 }

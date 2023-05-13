@@ -17,7 +17,7 @@ class BlogFactory extends Factory
     {
         return [
             'title' => $this->faker->word(),
-            'content' => $this->faker->sentence(10),
+            'content' => $this->faker->sentence(100),
             'user_id' => User::all()->random()->id,
             'category_id' => Category::all()->random()->id,
             'thumbnail' => 'thumbnail.jpg'

@@ -3,46 +3,17 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Blog;
 
 class BlogController extends Controller
 {
-   
-    public function index()
-    {
+    public function index(Request $request){
+
+       $blogs = Blog::
+       where('title','like', '%'.$request->title.'%')->paginate(10);
         
-    }
-
-    public function create()
-    {
-        $categories = app('App\Http\Controller\CategoryController')->index();
-    }
-
-    public function store(Request $request)
-    {
-        //
-    }
-
-  
-    public function show($id)
-    {
-        //
-    }
-
-   
-    public function edit($id)
-    {
-        //
-    }
-
-  
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-  
-    public function destroy($id)
-    {
-        //
+        return view('dashboard',[
+            'blogs' => $blogs
+        ]);
     }
 }
