@@ -4,6 +4,7 @@
             {{ __('Dashboard') }}
         </h2>
     </x-slot>
+    <x-slot name="content">
     <div class="p-4">
         {{ $blogs->links() }}
     </div>
@@ -19,6 +20,11 @@
                     class="mt-3 inline-flex w-full items-center justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 sm:ml-3 sm:mt-0 sm:w-auto">Search</button>
             </form>
     </div>
+<div class="mx-auto p-4">
+        <button type="button" onclick="location='/user/{{ auth()->user()->id }}/blog-create';"
+            class="mt-3 inline-flex w-full items-center justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 sm:ml-3 sm:mt-0 sm:w-auto">Create a blog</button>
+</div>
+    
     @foreach($blogs as $blog)
     <div class="py-5">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -30,6 +36,9 @@
                                 alt="">
                         </div>
                         <div class="min-w-0 flex-1">
+                            <p class="text-sm font-semibold text-gray-900">
+                                <a href="/user/{{ $blog->user_id }}/blog/{{ $blog->id }}" class="hover:underline">{{ $blog->title }}</a>
+                            </p>
                             <p class="text-sm font-semibold text-gray-900">
                                 <a href="#" class="hover:underline">{{ $blog->user->name }}</a>
                             </p>
@@ -65,4 +74,5 @@
         
         </div>
     @endforeach
+    </x-slot>
 </x-app-layout>

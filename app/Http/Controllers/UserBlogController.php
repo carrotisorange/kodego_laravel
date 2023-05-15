@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Blog;
 use Illuminate\Validation\Rule;
 use App\Models\User;
+use App\Models\Category;
 
 class UserBlogController extends Controller
 {
@@ -13,8 +14,12 @@ class UserBlogController extends Controller
         return User::find($user_id)->blogs;
     }
 
-    public function create(){
-        // blog form
+    public function create(User $user){
+        $categories = Category::all();
+
+       return view('users.blogs.create',[
+        'categories' => $categories
+       ]);
     }
 
     public function edit(){
@@ -23,35 +28,8 @@ class UserBlogController extends Controller
 
 
     // As a user, I want to post a blog, so that I can express my feelings.
-    public function store(Request $request){
+    public function store(Request $request, User $user){
 
-        //validate
-        $validated = $request->validate([
-            'title' => 'required | max:255',
-            'content' => 'required | min:10',
-            'category_id' => ['required', Rule::exists('categories', 'id')],
-            'thumbnail' => 'nullable | mimes:jpg,bmp,png | max:10240', //10MB
-            // 'user_id' => 'required',
-        ]);
-
-        //stop here
-
-        //get the input from the form
-        $title = $request->title;
-        $content = $request->content;
-        $user_id = 1; //auth()->user()->id;
-        $category_id = $request->category_id;
-        $thumbnail = '';
-        
-
-        $validated['user_id'] = 1;
-
-
-        if($request->thumbnail){
-            $thumbnail = request()->file('thumbnail')->store('thumbnails');
-        }else{
-            $thumbnail = 'thumbnail.jpg';
-        }
 
         //store the data
         //  og code
@@ -64,11 +42,41 @@ class UserBlogController extends Controller
         // ]);
 
         //refactored
-       $blog = Blog::create($validated);
+            try{
+                //validate
+                $validated = $request->validate([
+                'title' => 'required | max:255',
+                'content' => 'required | min:10',
+                'category_id' => ['required', Rule::exists('categories', 'id')],
+                'thumbnail' => 'nullable | mimes:jpg,bmp,png | max:10240', //10MB
+                ]);
+
+                //stop here
+
+                //get the input from the form
+                $title = $request->title;
+                $content = $request->content;
+                $user_id = 1; //auth()->user()->id;
+                $category_id = $request->category_id;
+                $thumbnail = '';
 
 
-        //show a message
-        return $blog;
+                $validated['user_id'] = $user->id;
+
+
+                if($request->thumbnail){
+                    $thumbnail = request()->file('thumbnail')->store('thumbnails');
+                }else{
+                    $thumbnail = 'thumbnail.jpg';
+                }
+
+                $blog = Blog::create($validated);
+            }catch(\Exception $e){
+                ddd($e);
+            }
+
+
+        return redirect('/dashboard')->with('success', 'Success');
 
     }
 
