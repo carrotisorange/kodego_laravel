@@ -35,8 +35,8 @@
             <div class="bg-white px-4 py-5 sm:px-6">
                 <div class="flex space-x-3">
                     <div class="flex-shrink-0">
-                        <img class="h-10 w-10 rounded-full"
-                            src="https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                        <img class="h-20 w-20 rounded-full"
+                          src="{{ asset('/storage/'.$blog->thumbnail) }}"
                             alt="">
                     </div>
                     <div class="min-w-0 flex-1">
@@ -49,12 +49,17 @@
                         </p>
                         <br>
                         <p class="text-sm text-gray-500">
-                            <a href="/user/{{ $blog->user_id }}/blog/{{ $blog->id }}" class="hover:underline">{{
-                                $blog->content }}</a>
+                           {{
+                                $blog->content }}
                         </p>
                     </div>
                     <div class="flex flex-shrink-0 self-center">
-                        <div class="relative inline-block text-left">
+                        {{-- @if(auth()->user()->id == $blog->user_id) --}}
+                        @can('edit-blog', [auth()->user()->id, $blog->user_id])
+                            <a href="/user/{{ $blog->user_id }}/blog/{{ $blog->id }}/edit" class="hover:underline text-blue-600">Edit</a>
+                        @endcan
+                        {{-- @endif --}}
+                        {{-- <div class="relative inline-block text-left">
                             <div>
                                 <button type="button"
                                     class="-m-2 flex items-center rounded-full p-2 text-gray-400 hover:text-gray-600"
@@ -66,7 +71,7 @@
                                     </svg>
                                 </button>
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
             </div>

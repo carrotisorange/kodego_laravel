@@ -22,61 +22,38 @@ class UserBlogController extends Controller
        ]);
     }
 
-    public function edit(){
-        // blog form
+    public function edit(User $user, Blog $blog){
+        $this->authorize('edit-blog', [$user->id, $blog->user_id]);
     }
-
 
     // As a user, I want to post a blog, so that I can express my feelings.
     public function store(Request $request, User $user){
 
+         $validated = $request->validate([
+            'title' => 'required | max:255',
+            'content' => 'required | min:10',
+            'category_id' => ['required', Rule::exists('categories', 'id')],
+            'thumbnail' => 'nullable | mimes:jpg,bmp,png | max:10240', //10MB
+         ]);
 
-        //store the data
-        //  og code
-        // Blog::create([
-        //     'title' => $title,
-        //     'content' => $content,
-        //     'user_id' => $user_id,
-        //     'category_id' => $category_id,
-        //     'thumbnail' => $thumbnail
-        // ]);
+        try{
+           
+            if($request->thumbnail){
+                $thumbnail = $request->file('thumbnail')->store('thumbnails');
+            }else{
+                $thumbnail = 'thumbnails/thumbnail.jpg';
+            }
 
-        //refactored
-            try{
-                //validate
-                $validated = $request->validate([
-                'title' => 'required | max:255',
-                'content' => 'required | min:10',
-                'category_id' => ['required', Rule::exists('categories', 'id')],
-                'thumbnail' => 'nullable | mimes:jpg,bmp,png | max:10240', //10MB
-                ]);
+            $validated['user_id'] = $user->id;
+            $validated['thumbnail'] = $thumbnail;
 
-                //stop here
-
-                //get the input from the form
-                $title = $request->title;
-                $content = $request->content;
-                $user_id = 1; //auth()->user()->id;
-                $category_id = $request->category_id;
-                $thumbnail = '';
-
-
-                $validated['user_id'] = $user->id;
-
-
-                if($request->thumbnail){
-                    $thumbnail = request()->file('thumbnail')->store('thumbnails');
-                }else{
-                    $thumbnail = 'thumbnail.jpg';
-                }
-
-                $blog = Blog::create($validated);
+            $blog = Blog::create($validated);
+            
             }catch(\Exception $e){
                 ddd($e);
             }
 
-
-        return redirect('/dashboard')->with('success', 'Success');
+        return redirect('/dashboard')->with('success', 'The blog has been posted!');
 
     }
 

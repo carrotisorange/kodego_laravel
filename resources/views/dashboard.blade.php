@@ -32,8 +32,8 @@
                     <div class="flex space-x-3">
                         <div class="flex-shrink-0">
                             <img class="h-10 w-10 rounded-full"
-                                src="https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                                alt="">
+                                src="{{ asset('/storage/'.$blog->thumbnail) }}"
+                                alt="thumbnail image">
                         </div>
                         <div class="min-w-0 flex-1">
                             <p class="text-sm font-semibold text-gray-900">

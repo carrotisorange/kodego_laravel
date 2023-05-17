@@ -14,15 +14,19 @@
            
     
                 <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-                    <div class="sm:col-span-4">
+                    <div class="col-span-full">
                         <label for="username" class="block text-sm font-medium leading-6 text-gray-900">Title</label>
                         <div class="mt-2">
                             <div class="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
                                
-                                <input type="text" name="title" id="title" autocomplete="title"
+                                <input type="text" name="title" id="title" autocomplete="title" value="{{ old('title') }}"
                                     class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                     placeholder="title of the blog">
+                                 
                             </div>
+                            @error('title')
+                                <div class="text-red-600 alert alert-danger">{{ $message }}</div>
+                            @enderror
                         </div>
                     </div>
 
@@ -32,19 +36,26 @@
                             <select name="category_id" id="category_id" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                                 <option value="">Select one</option>
                                 @foreach ($categories as $category)
-                                    <option value="{{ $category->id }}">{{ $category->category }} - {{ $category->description }}</option>
+                                    <option value="{{ $category->id }}" {{ old('category_id')==$category->id?  'selected': 'Select one' }}>{{ $category->category }}</option>
                                 @endforeach
                             </select>
                         </div>
-  
+                        @error('category_id')
+                        <div class="text-red-600 alert alert-danger">{{ $message }}</div>
+                        @enderror
                     </div>
     
                     <div class="col-span-full">
                         <label for="content" class="block text-sm font-medium leading-6 text-gray-900">Content</label>
                         <div class="mt-2">
                             <textarea id="content" name="content" rows="3"
-                                class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"></textarea>
+                                class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                          {{ old('content') }}
+                            </textarea>
                         </div>
+                        @error('content')
+                        <div class="text-red-600 alert alert-danger">{{ $message }}</div>
+                        @enderror
                         <p class="mt-3 text-sm leading-6 text-gray-600">Write a few sentences about the blog.</p>
                     </div>
                     
@@ -64,12 +75,15 @@
                                     <label for="thumbnail"
                                         class="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500">
                                         <span>Upload a picture</span>
-                                        <input id="thumbnail" name="thumbnail" type="file" class="sr-only">
+                                        <input id="thumbnail" name="thumbnail" type="file" value="{{ old('thumbnail') }}" class="sr-only">
                                     </label>
                                  
                                 </div>
                                 <p class="text-xs leading-5 text-gray-600">PNG, JPG, GIF up to 10MB</p>
                             </div>
+                            @error('thumbnail')
+                            <div class="text-red-600 alert alert-danger">{{ $message }}</div>
+                            @enderror
                         </div>
                     </div>
                 </div>

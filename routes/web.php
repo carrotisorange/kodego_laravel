@@ -64,6 +64,8 @@ Route::middleware(['auth', 'verified'])->scopeBindings()->controller(UserBlogCon
     Route::get('/user/{user_id}/blogs', 'index')->whereNumber('id');
     //show method
     Route::get('/user/{user}/blog/{blog}', 'show');
+    //edit method
+    Route::get('/user/{user}/blog/{blog}/edit', 'edit');
     //create method
     Route::get('/user/{user}/blog-create', 'create');
 
