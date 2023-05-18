@@ -9,7 +9,7 @@
         {{ $blogs->links() }}
     </div>
     <div class="mx-auto p-4">
-        <form action="/dashboard/" method="GET" class="mt-5 sm:flex sm:items-center">
+        <form action="/blogs/" method="GET" class="mt-5 sm:flex sm:items-center">
                 <div class="w-full sm:max-w-xs">
                     <label for="title" class="sr-only"></label>
                     <input type="text" name="title" id="title"
@@ -37,7 +37,7 @@
                         </div>
                         <div class="min-w-0 flex-1">
                             <p class="text-sm font-semibold text-gray-900">
-                                <a href="/user/{{ $blog->user_id }}/blog/{{ $blog->id }}" class="hover:underline">{{ $blog->title }}</a>
+                                <a href="/user/{{ $blog->user_id }}/blog/{{ $blog->blog_id }}" class="hover:underline">{{ $blog->title }}</a>
                             </p>
                             <p class="text-sm font-semibold text-gray-900">
                                 <a href="#" class="hover:underline">{{ $blog->user->name }}</a>
@@ -47,7 +47,8 @@
                             </p>
                             <br>
                             <p class="text-sm text-gray-500">
-                                <a href="/user/{{ $blog->user_id }}/blog/{{ $blog->id }}" class="hover:underline">{{ $blog->content }}</a>
+                                {{ Str::limit($blog->content, 50) }}
+                                <a href="/user/{{ $blog->user_id }}/blog/{{ $blog->blog_id }}" class="hover:underline">Read more</a>
                             </p>
                         </div>
                         <div class="flex flex-shrink-0 self-center">

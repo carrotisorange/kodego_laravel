@@ -12,7 +12,7 @@ class BlogController extends Controller
        $blogs = Blog::
        where('title','like', '%'.$request->title.'%')->paginate(10);
         
-        return view('dashboard',[
+        return view('blogs.index',[
             'blogs' => $blogs
         ]);
     }

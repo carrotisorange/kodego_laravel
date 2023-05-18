@@ -9,6 +9,7 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white px-4 py-5 sm:px-6">
     <form action="/user/{{ auth()->user()->id }}/blog/store" method="POST" enctype="multipart/form-data">
+        @csrf
         <div class="space-y-12">
             <div class="border-b border-gray-900/10 pb-12">
            

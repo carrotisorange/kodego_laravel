@@ -28,7 +28,7 @@ Route::get('/', function () {
 });
 
 Route::middleware(['auth', 'verified'])->controller(BlogController::class)->group(function () {
-    Route::get('/dashboard', 'index')->name('dashboard');
+    Route::get('/blogs', 'index')->name('dashboard');
 });
 
 require __DIR__.'/auth.php';
@@ -56,10 +56,11 @@ Route::controller(UserController::class)->group(function () {
 
 //routes for the user blog
 Route::middleware(['auth', 'verified'])->scopeBindings()->controller(UserBlogController::class)->group(function () {
+    Route::get('/user/{user}/blogs', 'index');
     //store method
     Route::post('/user/{user}/blog/store', 'store');
     //edit method
-    Route::put('/user/{user_id}/blog/{blog_id}/update', 'update')->whereNumber(['blog_id', 'user_id']);
+    Route::put('/user/{user}/blog/{blog}/update', 'update');
     //index method
     Route::get('/user/{user_id}/blogs', 'index')->whereNumber('id');
     //show method

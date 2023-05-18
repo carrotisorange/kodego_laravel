@@ -43,6 +43,9 @@
                         <p class="text-sm font-semibold text-gray-900">
                             <a href="#" class="hover:underline">{{ $blog->user->name }}</a>
                         </p>
+                        <p class="text-sm font-semibold text-gray-900">
+                            <a href="#" class="hover:underline">{{ $blog->category->category }}</a>
+                        </p>
                         <p class="text-sm text-gray-500">
                             <a href="#" class="hover:underline">{{
                                 Carbon\Carbon::parse($blog->created_at)->diffForHumans() }}</a>
@@ -55,9 +58,9 @@
                     </div>
                     <div class="flex flex-shrink-0 self-center">
                         {{-- @if(auth()->user()->id == $blog->user_id) --}}
-                        @can('edit-blog', [auth()->user()->id, $blog->user_id])
+                        @if(auth()->user()->id === $blog->user_id)
                             <a href="/user/{{ $blog->user_id }}/blog/{{ $blog->id }}/edit" class="hover:underline text-blue-600">Edit</a>
-                        @endcan
+                        @endif
                         {{-- @endif --}}
                         {{-- <div class="relative inline-block text-left">
                             <div>
