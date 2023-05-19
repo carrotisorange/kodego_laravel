@@ -51,30 +51,47 @@ class UserController extends Controller
         //select * from users where id = $id;
     }
 
-    public function edit($id)
+    public function edit(User $user)
     {
-        //display the form for editing an existing user
-        ddd('this is user edit page');
+        if(auth()->user()->id === $user->id){
+            return view('users.edit',[
+               'user' => $user
+            ]);
+        }else{
+            return abort(403);
+        }
+     
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, User $user)
     {
         // validate inputs
         $validated = $request->validate([
             'name' => ['required'],
-            'email' => ['required','email', Rule::unique('users', 'email')->ignore($id)],
-            'mobile_number' => ['required', Rule::unique('users', 'mobile_number')->ignore($id)],
-            'password' => ['required'],
+            'email' => ['required','email', Rule::unique('users', 'email')->ignore($user->id)],
+            'password' => ['nullable'],
         ]);
 
-        //update a particular user from the users table
-       return User::where('id', $id)
-       ->update([
-        'name' => $request->name,
-        'email' => $request->email,
-        'password' => Hash::make($request->password),
-        'mobile_number' => $request->mobile_number
-       ]);
+        if($request->password){
+              //update a particular user from the users table
+            User::where('id', $user->id)
+        ->update([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+        
+        ]);
+        }else{
+              //update a particular user from the users table
+              User::where('id', $user->id)
+              ->update([
+              'name' => $request->name,
+              'email' => $request->email,
+              ]);
+        }
+
+        return back()->with('success', 'The profile has been updated!');
+      
     }
 
     public function destroy($id)

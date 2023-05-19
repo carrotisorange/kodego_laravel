@@ -37,6 +37,9 @@
                         <x-dropdown-link href="/user/{{ auth()->user()->id }}/blogs">
                            My Blogs
                         </x-dropdown-link>
+                        <x-dropdown-link href="/user/{{ auth()->user()->email }}/edit">
+                            My Profile
+                        </x-dropdown-link>
                         <!-- Authentication -->
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
@@ -79,6 +82,12 @@
             </div>
 
             <div class="mt-3 space-y-1">
+                <x-dropdown-link href="/user/{{ auth()->user()->id }}/blogs">
+                        My Blogs
+                    </x-dropdown-link>
+                    <x-dropdown-link href="/user/{{ auth()->user()->email }}/edit">
+                        My Profile
+                    </x-dropdown-link>
                 <!-- Authentication -->
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf

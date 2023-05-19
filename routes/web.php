@@ -38,20 +38,10 @@ require __DIR__.'/userblogcomment.php';
 
 //routes for the user 
 Route::controller(UserController::class)->group(function () {
-  
-   Route::get('/users', 'index');
 
-   Route::get('/users/create', 'create');
+   Route::get('/user/{user:email}/edit', 'edit');
 
-   Route::post('/users/store', 'store');
-
-   Route::get('/users/{email}', 'show');
-
-   Route::get('/users/{id}/edit', 'edit')->whereNumber('id');
-
-   Route::put('/users/{id}/update', 'update')->whereNumber('id');
-
-   Route::delete('/users/{id}/delete', 'destroy')->whereNumber('id');
+   Route::put('/user/{user}/update', 'update');
 });
 
 //routes for the user blog
@@ -71,16 +61,16 @@ Route::middleware(['auth', 'verified'])->scopeBindings()->controller(UserBlogCon
     Route::get('/user/{user}/blog-create', 'create');
 
     //destroy method
-    Route::delete('/user/{user_id}/blog/{blog_id}/delete', 'destroy')->whereNumber(['blog_id', 'user_id']);
+    Route::delete('/user/{user}/blog/{blog}/delete', 'destroy');
 });
 
 //routes for the blog
 Route::middleware(['auth', 'verified'])->controller(UserBlogLikeController::class)->group(function () {
     //store method
-    Route::post('/user/{user_id}/blog/{blog_id}/like/store', 'store')->whereNumber(['user_id', 'blog_id']);
+    Route::post('/user/{user}/blog/{blog}/like/store', 'store');
 
     //update method 
-    Route::put('/user/{user_id}/blog/{blog_id}/like/{like_id}/update', 'update')->whereNumber(['blog_id', 'user_id', 'like_id']);
+    Route::put('/user/{user}/blog/{blog}/like/{like}/update', 'update');
 
     //index method
     Route::get('/user/{user_id}/blog/{blog_id}/likes', 'index')->whereNumber(['blog_id', 'user_id']);

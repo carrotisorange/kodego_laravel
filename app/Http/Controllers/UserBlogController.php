@@ -7,6 +7,7 @@ use App\Models\Blog;
 use Illuminate\Validation\Rule;
 use App\Models\User;
 use App\Models\Category;
+use App\Models\Like;
 
 class UserBlogController extends Controller
 {
@@ -103,25 +104,33 @@ class UserBlogController extends Controller
        
     }
 
-    public function destroy($user_id, $blog_id){
+    public function destroy(User $user, Blog $blog){
         
-        $blog_user_id = Blog::find($blog_id)->user->id;
+        $blog_user_id = Blog::find($blog->id)->user->id;
 
-        if($user_id == $blog_user_id){
-            Blog::where('id', $blog_id)
+        if($user->id == $blog_user_id){
+            Blog::where('id', $blog->id)
             ->delete();
 
-            return 'deleted!';
+            //delete 
         }else{
             return abort(403);
         }
 
+        return redirect('/user/'.$user->id.'/blogs')->with('success', 'The blog has been deleted!');
+
     }
 
-    public function show( User $user, Blog $blog){
+    public function show(User $user, Blog $blog){
 
+        $user_likes_count = Like::where('blog_id', $blog->id)->where('user_id', auth()->user()->id)->count();
+
+        $is_blog_liked = Like::where('blog_id', $blog->id)->where('user_id', auth()->user()->id)->pluck('is_liked')->first();
+        
         return view('users.blogs.show',[
-            'blog' => $blog
+            'blog' => $blog,
+            'is_blog_liked' => $is_blog_liked,
+            'user_likes_count' => $user_likes_count
         ]);
     }
 }

@@ -37,7 +37,7 @@
                         </div>
                         <div class="min-w-0 flex-1">
                             <p class="text-sm font-semibold text-gray-900">
-                                <a href="/user/{{ $blog->user_id }}/blog/{{ $blog->blog_id }}" class="hover:underline">{{ $blog->title }}</a>
+                                <a href="/user/{{ $blog->user_id }}/blog/{{ $blog->id }}" class="hover:underline">{{ $blog->title }}</a>
                             </p>
                             <p class="text-sm font-semibold text-gray-900">
                                 <a href="#" class="hover:underline">{{ $blog->user->name }}</a>
@@ -48,7 +48,7 @@
                             <br>
                             <p class="text-sm text-gray-500">
                                 {{ Str::limit($blog->content, 50) }}
-                                <a href="/user/{{ $blog->user_id }}/blog/{{ $blog->blog_id }}" class="hover:underline">Read more</a>
+                                <a href="/user/{{ $blog->user_id }}/blog/{{ $blog->id }}" class="hover:underline">Read more</a>
                             </p>
                         </div>
                         <div class="flex flex-shrink-0 self-center">
