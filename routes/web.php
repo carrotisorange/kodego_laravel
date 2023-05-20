@@ -27,7 +27,7 @@ Route::get('/', function () {
     return redirect('/login');
 });
 
-Route::middleware(['auth', 'verified'])->controller(BlogController::class)->group(function () {
+Route::controller(BlogController::class)->group(function () {
     Route::get('/blogs', 'index')->name('dashboard');
 });
 
@@ -70,7 +70,7 @@ Route::middleware(['auth', 'verified'])->controller(UserBlogLikeController::clas
     Route::post('/user/{user}/blog/{blog}/like/store', 'store');
 
     //update method 
-    Route::put('/user/{user}/blog/{blog}/like/{like}/update', 'update');
+    Route::put('/user/{user}/blog/{blog}/like/{like_id}/update', 'update');
 
     //index method
     Route::get('/user/{user_id}/blog/{blog_id}/likes', 'index')->whereNumber(['blog_id', 'user_id']);

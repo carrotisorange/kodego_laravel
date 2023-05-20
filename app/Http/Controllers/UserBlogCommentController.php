@@ -17,28 +17,30 @@ class UserBlogCommentController extends Controller
             'comments' => 'required|min:1' 
         ]);
 
-        $validated['user_id'] = $user->id;
+        $validated['user_id'] = auth()->user()->id;
         $validated['blog_id'] = $blog->id;
 
         $comment =  Comment::create($validated);
 
-        return 'inserted id '. $comment->id;
+        return back()->with('success', 'Comment has been submitted!');
 
     }
 
     // As a user, I want to reply to a comment posted on a blog, so that I can share my opinion.
     public function store_comment_with_comment_id(Request $request, User $user, Blog $blog, Comment $comment){
         $validated = $request->validate([
-            'comments' => 'required|min:1' 
+            'reply' => 'required|min:1'
         ]);
 
-        $validated['user_id'] = $user->id;
-        $validated['blog_id'] = $blog->id;
-        $validated['comment_id'] = $comment->id;
+        $comment =  Comment::create([
+            'comments'=>$request->reply,
+            'user_id' => auth()->user()->id,
+            'blog_id' => $blog->id,
+            'comment_id' => $comment->id
+        ]);
 
-        $comment =  Comment::create($validated);
-
-        return 'inserted id '. $comment->id;
+    return redirect('/user/'.$blog->user->id.'/blog/'.$blog->id)->with('success', 'Reply has been
+    posted!');
 
     }
     // As a user, I want to delete a comment I posted, so that I can undo my action.
@@ -49,10 +51,13 @@ class UserBlogCommentController extends Controller
          $blog_user_id = $blog->user->id;
          $comment_user_id = $comment->user->id;
 
-         if($user->id == $blog_user_id || $user->id == $comment_user_id){
+         if(auth()->user()->id == $blog_user_id || auth()->user()->id == $comment_user_id){
             if(Comment::find($comment->id)){
-              return Comment::where('id', $comment->id)
+               Comment::where('id', $comment->id)
               ->delete();
+
+                return redirect('/user/'.$blog_user_id.'/blog/'.$blog->id)->with('success', 'Comment has been
+                removed!');
             }
 
             return 'Not found!';
@@ -67,21 +72,23 @@ class UserBlogCommentController extends Controller
     public function update(Request $request, User $user, Blog $blog, Comment $comment){
 
         $validated = $request->validate([
-           'comments' => 'required|min:1'
+           'posted_comment' => 'required|min:1'
          ]);
            
         $blog_user_id = $blog->user->id;
 
-         if($user->id == $blog_user_id){
-            if(Comment::find($comment->id)){
-              return Comment::where('id', $comment->id)
-              ->update($validated);
 
-              return 'success!';
-            }
+        
+               Comment::where('id', $comment->id)
+              ->update([
+                'comments' => $request->posted_comment
+              ]);
 
-            return 'Not found!';
-         }
+              
+
+
+         return redirect('/user/'.$blog_user_id.'/blog/'.$blog->id)->with('success', 'Comment has been
+         Updated!');
     }
 
     public function index(User $user, Blog $blog){

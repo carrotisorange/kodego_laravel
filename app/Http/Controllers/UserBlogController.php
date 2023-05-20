@@ -126,11 +126,23 @@ class UserBlogController extends Controller
         $user_likes_count = Like::where('blog_id', $blog->id)->where('user_id', auth()->user()->id)->count();
 
         $is_blog_liked = Like::where('blog_id', $blog->id)->where('user_id', auth()->user()->id)->pluck('is_liked')->first();
-        
+
+        $like_id = Like::where('blog_id', $blog->id)->where('user_id', auth()->user()->id)->pluck('id')->first();
+
+        $total_likes_count = Blog::find($blog->id)->likes->where('is_liked', 1)->count();
+
+        $blog_user_likes = Blog::find($blog->id)->likes()->where('is_liked', 1)->get();
+
+        $comments = Blog::find($blog->id)->comments()->whereNull('comment_id')->orderBy('created_at', 'desc')->get();
+
         return view('users.blogs.show',[
             'blog' => $blog,
             'is_blog_liked' => $is_blog_liked,
-            'user_likes_count' => $user_likes_count
+            'user_likes_count' => $user_likes_count,
+            'like_id' => $like_id,
+            'total_likes_count' => $total_likes_count,
+            'blog_user_likes' => $blog_user_likes,
+            'comments' => $comments
         ]);
     }
 }

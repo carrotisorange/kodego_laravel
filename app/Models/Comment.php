@@ -17,4 +17,12 @@ class Comment extends Model
     public function blog(){
         return $this->belongsTo(Comment::class,'blog_id');
     }
+
+    public function replies(){
+        return $this->hasMany(Comment::class);
+    }
+
+    public function reply(){
+        return $this->belongsTo(Comment::class, 'comment_id');
+    }
 }

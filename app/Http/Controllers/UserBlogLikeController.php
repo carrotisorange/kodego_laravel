@@ -32,20 +32,16 @@ class UserBlogLikeController extends Controller
         return back()->with('success', 'You liked this blog!');
     }
 
-    public function update(User $user, Blog $blog, Like $like){
-        $blog_user_id = Blog::find($blog->id)->user->id;
-        $like = Like::find($like->id);
+    public function update(User $user, Blog $blog, $like_id){
+        $like = Like::find($like_id);
 
-        if($user->id != $blog_user_id){
             Like::where('id', $like->id)
             ->update([
                 'is_liked' => !$like->is_liked,
             ]);
 
-            return 'success';
-        }else{
-            return abort(403);
-        }
+        return back()->with('success', 'You updated your like on this blog!');
+
     }
 
     public function index($user_id, $blog_id){

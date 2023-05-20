@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserBlogCommentController;
 
-Route::scopeBindings()->controller(UserBlogCommentController::class)->group(function () {
+Route::controller(UserBlogCommentController::class)->group(function () {
     //store comment method
     Route::post('/user/{user}/blog/{blog}/comment/store', 'store_comment');
     //store comment with comment id
