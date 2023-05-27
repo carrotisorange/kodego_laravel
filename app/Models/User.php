@@ -45,7 +45,7 @@ class User extends Authenticatable implements MustVerifyEmail
     ];
 
     protected $attributes = [
-       
+       'email_verified_at' => '2023-05-27 00:40:26',
     ];
 
     //1 to many
